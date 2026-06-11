@@ -23,7 +23,7 @@ async def part1_attacks():
     print("=" * 60)
 
     from agents.agent import create_unsafe_agent, test_agent
-    from attacks.attacks import run_attacks, generate_ai_attacks
+    from attacks.attacks import run_attacks, generate_ai_attacks, run_ai_attacks
 
     # Create and test the unsafe agent
     agent, runner = create_unsafe_agent()
@@ -33,9 +33,14 @@ async def part1_attacks():
     print("\n--- Running manual attacks (TODO 1) ---")
     results = await run_attacks(agent, runner)
 
-    # TODO 2: Generate AI attack test cases
+    # TODO 2: Generate AI attack test cases and run against agent
     print("\n--- Generating AI attacks (TODO 2) ---")
     ai_attacks = await generate_ai_attacks()
+
+    if ai_attacks:
+        print("\n--- Running AI-generated attacks against unsafe agent ---")
+        ai_results = await run_ai_attacks(agent, runner, ai_attacks=ai_attacks)
+        results.extend(ai_results)
 
     return results
 
